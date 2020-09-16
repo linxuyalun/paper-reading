@@ -34,5 +34,20 @@
   * Neptune employs coroutines as a l**ightweight mechanism for suspending tasks without losing task progress**. It couples this fine-grained control over CPU resources with a **locality-and memory-aware** (LMA) scheduling policy to determine which tasks to suspend and when, thereby sharing executors among heterogeneous jobs.
   * **Lightweight suspendable tasks**. To prioritize latency-sensitive tasks, Neptune suspends tasks that belong to batch jobs on-demand. As a lightweight task preemption mechanism, **Neptune uses coroutines, which avoid the overhead of thread synchronization**. **Coroutines can suspend batch tasks within milliseconds, thus reducing head-of-line blocking for latency-sensitive tasks. When tasks are resumed, they preserve their execution progress**. To the best of our knowledge, Neptune is the **first distributed dataflow system** to use **coroutines** for task implementation and scheduling.
 
+**Pigeon: an Effective Distributed, Hierarchical Datacenter Job Scheduler**
 
+* Issue
+
+  In today’s datacenters, job heterogeneity makes it difficult for schedulers to **simultaneously meet latency requirements and maintain high resource utilization**. 
+
+  The key issues are the **scalability in centralized schedulers, ineffective and inefficient probing and resource sharing in both distributed and hybrid schedulers**.
+
+  It is common practice to collocate short and long jobs in datacenter management, but meeting the diverse needs of heterogeneous jobs remains a critical challeng
+
+* Solution
+
+  * Pigeon, a distributed, hierarchical job scheduler based on a two-layer design.
+  * Pigeon divides workers into groups, each managed by a **separate** master. In Pigeon, upon a job arrival, a distributed scheduler directly distribute tasks evenly among masters with minimum job processing overhead, hence, preserving highest possible scalability. Meanwhile, each master manages and distributes all the received tasks centrally, oblivious of the job context, allowing for full sharing of the worker pool at the group level to maximize multiplexing gain. 
+
+* 这篇文章在一开始谈论 short 和 long job 各自的特点的时候描述的非常清楚，可以作为有效的参考。同样的，它在 introduction 里面就已经充分介绍了自己的这个方案是怎么操作的。
 
