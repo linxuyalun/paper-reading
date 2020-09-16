@@ -51,3 +51,22 @@
 
 * 这篇文章在一开始谈论 short 和 long job 各自的特点的时候描述的非常清楚，可以作为有效的参考。同样的，它在 introduction 里面就已经充分介绍了自己的这个方案是怎么操作的。
 
+**THEMIS: Fair and Efficient GPU Cluster Scheduling**
+
+* Issue
+
+  Training individual ML models is time- and resource-intensive with each training job typically executing in parallel on a number of GPUs.
+
+  Significant contention ensues when multiple such workloads are run atop a shared cluster of GPUs. A key ques- tion is how to fairly apportion GPUs across workloads. We find that established cluster scheduling disciplines are a poor fit because of ML workloads’ unique attributes: ML jobs have long-running tasks that need to be gang-scheduled, and their performance is sensitive to tasks’ relative placement.
+
+  However, today, there are no ML workload-specific mechanisms to share a GPU cluster in a *fair* manner.
+
+  If there are a total *N* users sharing a cluster *C*, every user’s performance should be no worse than using a private cluster of size *C*/N（一个多租户不公平的问题）。
+
+  Quincy [18], DRF [8], and Carbyne [11]. However, these techniques were designed for big data work- loads, and while they are used widely to manage GPU clusters today, they are far from effective.
+
+* Solution
+
+  * THEMIS, a new scheduling framework for ML training workloads. It’s **GPU allocation policy** enforces that ML workloads complete in *a finish-time fair* manner, a new notion we introduce. 
+  * To capture placement sensitivity and ensure efficiency, THEMIS uses a **two-level scheduling archi- tecture** where ML workloads bid on available resources that are offered in an *auction* run by a central arbiter. Our auction design allocates GPUs to winning bids by trading off fairness for efficiency in the short term, but ensuring finish-time fair- ness in the long term. 
+
