@@ -1,7 +1,7 @@
 # paper-reading
 ## Scheduler
 
-**Medea: Scheduling of Long Running Applications in Shared Production Clusters**
+**[Medea: Scheduling of Long Running Applications in Shared Production Clusters](scheduler/medea.md)**
 
 * Issue
 
@@ -10,6 +10,8 @@
   Since cluster managers are application-agnostic, they have enabled cluster operators to consolidate diverse workloads onto shared clusters.
 
   In the presence of these applications, the cluster scheduler must attain global optimization objectives, **such as maximizing the number of deployed applications or minimizing the violated constraints and the resource fragmentation, but without affecting the scheduling latency of short-running containers**.
+
+  At the same time, **placing LRAs, along with batch jobs, in shared clusters is appealing to reduce cluster operational costs, avoid unnecessary data movement, and enable pipelines involving both classes of applications**.
 
 * Solution
 
