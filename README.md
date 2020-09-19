@@ -24,7 +24,7 @@
   * Evaluated on a 400-node cluster, our implementation of Medea on Apache Hadoop YARN achieves placement of long-running applications with significant performance and resilience benefits compared to state-of-the-art schedulers.
   * shared production cluster ？？
 
-**Neptune: Scheduling Suspendable Tasks for Unified Stream/Batch Applications**
+[**Neptune: Scheduling Suspendable Tasks for Unified Stream/Batch Applications**](scheduler/neptune.md)
 
 * Issue
   * A recent trend is to unify different computation types as part of a single stream/batch application that combines latency-sensitive (“stream”) and latency-tolerant (“batch”) jobs.
