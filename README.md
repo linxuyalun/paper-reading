@@ -72,3 +72,19 @@
   * THEMIS, a new scheduling framework for ML training workloads. It’s **GPU allocation policy** enforces that ML workloads complete in *a finish-time fair* manner, a new notion we introduce. 
   * To capture placement sensitivity and ensure efficiency, THEMIS uses a **two-level scheduling archi- tecture** where ML workloads bid on available resources that are offered in an *auction* run by a central arbiter. Our auction design allocates GPUs to winning bids by trading off fairness for efficiency in the short term, but ensuring finish-time fair- ness in the long term. 
 
+**Autopilot: workload autoscaling at Google**
+
+* 要解决的问题：
+* 程序在集群中跑的时候，一个超过给定资源限制的任务可能会被截流或者被干掉，导致终端用户的延迟，所以一般来说，需要有集群管理者，主动分配一些多一点的资源，避免资源不够。
+
+## Streaming Processing
+
+[**Books: Streaming System**](computing/streaming-system/streaming-system.md)
+
+一本关于流处理大家非常推荐的书籍。
+
+[**The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive Scale, Unbounded, Out of Order Data Processing**](computing/dataflowmodel/dataflowmodel.md)
+
+* 要解决的问题：
+  * 实践表明，我们**永远无法同时优化数据处理的准确性、延迟程度和处理成本等各个维度**。因此，数据工作者面临如何协调这些几乎相互冲突的数据处理技术指标的窘境，设计出来各种纷繁的数据处理系统和实践方法。
+  * 
