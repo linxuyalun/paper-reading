@@ -1,5 +1,10 @@
 # Streaming System
 
+* [大数据凉了？不，流式计算浪潮才刚刚开始](https://www.infoq.cn/article/the-evolution-of-large-scale-data-processing)
+* [流式计算的时间窗口问题](https://zhuanlan.zhihu.com/p/50276136)
+* [流计算精品翻译: The Dataflow Model](https://developer.aliyun.com/article/64911)
+* [《The Dataflow Model》论文翻译](https://apparition957.github.io/2020/01/07/%E3%80%8AThe-Dataflow-Model%E3%80%8B%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/)
+
 ## Chapter1 Streaming 101
 
 ### 定义
