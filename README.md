@@ -93,7 +93,7 @@
 
 [**Cloud Programming Simplified: A Berkeley View on Serverless Computing**](serverless/berkeley-view/berkeley-view.md)
 
-一篇关于 serverless 的综述
+一篇关于 serverless 的综述，本文见[[译]简化云编程：伯克利关于Serverless计算的观点](https://zhuanlan.zhihu.com/p/76180907)。
 
 **[SOCK: Rapid Task Provisioning with Serverless-Optimized Containers](serverless/sock/sock.md)**
 
