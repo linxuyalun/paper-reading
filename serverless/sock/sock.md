@@ -3,6 +3,7 @@
 * [DOCKER基础技术：AUFS](https://coolshell.cn/articles/17061.html)
 * [runC容器和安全沙箱（runV）容器的区别](https://help.aliyun.com/document_detail/160309.html)
 * [mount --bind和硬连接的区别](https://blog.csdn.net/shengxia1999/article/details/52060354)
+* [SOCK：Serverless场景的runc容器启动优化方案](https://kernel.taobao.org/2019/06/SOCK-Rapid-Task-Provisioning-with-Serverless-Optimized-Containers/)
 
 ### 容器性能剖析
 
@@ -107,3 +108,51 @@ init 进程是 sock container 要跑的第一个进程，它就调用了 unshare
 既然不包括网络 namespace，那么它是怎么通信的呢，如图，scratch目录包含了一个Unix domain socket（它可以用于进程间通信），这里用于OpenLambada manager 与 容器内的进程通信。该通道还被用于控制平面，如一些特权控制。
 
 Linux 进程使用cgroup与namespace隔离。由于cgroup创建的开销较大，SOCK使用了cgroup pool 进行优化，容器创建时直接从pool中申请，容器销毁后则将cgroup释放给pool。
+
+### Python初始化开销分析
+
+Python里主流的package是哪些？这些package的初始化开销有多大？在本地的lambda worker中，缓存主流的packages是否具有可行性？
+
+作者对github上876K个python项目进行包依赖分析，选取了最主流的top20 packages。其中36%的import集中在这20个包(对应PyPi源所有packages的0.02%)。这20个包可分为五类：网络框架，数据分析，通信，存储，开发。其中，网络框架类可能会被基于serverless的网络框架替换，开发类则还没有应用场景。
+
+第一次使用某个package，需要三个步骤：download，install，import。继续使用该package，则可以跳过其中某些步骤。top20 包的初始化开销如Fig.7所示，平均初始化时间为1～13s，细分成三步：download开销1.6s，install开销2.3s，import开销107ms。
+
+接下来分析将PyPi仓库存储在本地的可行性。PyPi仓库包含101K个packges，Fig 8. 显示了整个仓库的packages分布，不包含索引文件，总大小为～1.5TB，压缩后～0.5TB。
+
+接下来需要回答，有多少PyPI packages可以共存安装在本地。这里不描述细节，直接给出结论，约97%的包是可以共存的。
+
+### Generalized Zygotes
+
+这里的核心问题是，尽管我们已经清楚解决方案了，可是我到底该怎么 pre-import。
+
+或者说，我怎么让那些已经“热”起来的包在你的容器里执行。
+
+来看一下这里的解决方法。
+
+首先，每个进程的 ipc 是设置好的，所以可以进程间通信。
+
+我想要知道你这个容器的 namespace，知道你这个容器的 root file system，我核心需要知道什么。
+
+文件描述符，图里的 fd（file descriptors），每一个进程所维护的该进程打开文件的记录表。
+
+manager 会把这个 fd 传给 Zygotes 的 helper 函数，Zygotes 也是在容器里的，然后 Zygotes 会 fork 一个子进程，叫做 tmp。
+
+这个进程随后会执行一个叫做 fchdir 的命令，它接受一个参数，就是我们传进去的 fd，它就把当前的工作目录变成 fd 所有的工作目录。然后执行 chroot，修改根目录。
+
+这个进程还会执行 setns 的命令，那就是之前干的事情，改各个 namespace，比如 ipc，pid，user，uts 这些
+
+Setns 的一个特殊之处是，在调用之后，仅部分应用于调用者的所有命名空间。因此，需要再次 fork，创建了 grandchild helper，这个 helper 就是在容器 H 中完全运行的了。
+
+这里还要注意的一个细节是，Zygote 本身会创建多个 Zygote，初始的 Zygote 什么预加载包都没有，新生成的 Zygote 都是从已有的 Zygote 创建出来的，不同的 Zygote 包含的预加载的包不同。从而这整个形成了一个树，因为都是 fork 出来的，所有 zygotes 之间的页的共享可以降低内存消耗。
+
+这样子的 lambda 加载对应的 pre-import 的 zygote。
+
+那为什么不直接所有主流包直接放在一起呢？论文解释说主要为了避免恶意包的存在，不同的 lambda 按需获取。
+
+### Serverless Cache
+
+SOCK使用了三层缓存：handler & install & import缓存，如Fig.12 所示。handler 缓存包含了未使用的handler容器，这些容器均处于暂停状态。它们不消耗CPU，但消耗内存，使用LRU淘汰算法来限制内存开销。install 缓存指预先在磁盘上安装的packages(占全量的97%)，已安装的包通过只读方式挂载至每一个容器。import缓存主要是用来管理Zygotes。Zygotes会消耗内存，且package的使用频率随时间而变化，所以Zygotes的管理相对复杂一些。特别是，当内存不够时，它的逐出策略会比较复杂。特别是它们之间的共享内存使得很难解释特定 Zygote 占用比。论文说它用了启发式的算法来估算内存使用和驱逐收益，但是很遗憾的是论文并没有在此问题上深入的写，也没有相关公式，所以就没法详细解释了。
+
+### 总结
+
+SOCK是由若干优化手段叠加而成的一套容器优化方案，其中缓存加速本质是通过空间(本地磁盘或者内存)换时间(低延迟高吞吐)，优化理念也并非完全新鲜(安卓的Zygote，AWS的container reuse，kata的vmtemplate等)。SOCK的价值在于对这些优化理念进行了加工，整合形成一套适用于runc平台下，为Serverless服务的容器解决方案。
