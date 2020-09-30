@@ -97,3 +97,11 @@
 
 **[SOCK: Rapid Task Provisioning with Serverless-Optimized Containers](serverless/sock/sock.md)**
 
+sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题进行的一系列优化，首先它认为 serverless 条件下现有的 docker 实现很多属性不需要了，具体的，
+
+* 使用 bind 来去掉 aufs
+* 使用了 chroot 取代了 mount namespace
+* 去掉了 net ns，因为可以依靠进程间通信
+* reuse cgroup
+
+当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
