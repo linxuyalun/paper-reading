@@ -1,3 +1,6 @@
+* [流计算精品翻译: The Dataflow Model](https://developer.aliyun.com/article/64911)
+* [《The Dataflow Model》论文翻译](https://apparition957.github.io/2020/01/07/%E3%80%8AThe-Dataflow-Model%E3%80%8B%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/)
+
 ## Introduction
 
 实践表明，我们**永远无法同时优化数据处理的准确性、延迟程度和处理成本等各个维度**。因此，数据工作者面临如何协调这些几乎相互冲突的数据处理技术指标的窘境，设计出来各种纷繁的数据处理系统和实践方法。
