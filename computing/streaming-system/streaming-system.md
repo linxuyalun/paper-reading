@@ -251,3 +251,7 @@ PCollection<KV<Team, Integer>> scores = input
 
 剩余部分见 [Streaming System 第二章：The What- Where- When- and How of Data Processing](https://developer.aliyun.com/article/674450?spm=a2c6h.13262185.0.0.314f8a3bMn2rBt)
 
+## Chapter 3 Watermark
+
+* [Streaming System 第三章：Watermarks](https://developer.aliyun.com/article/682873?spm=a2c6h.13262185.0.0.314f8a3bMn2rBt)
+* [《Streaming Systems》读书笔记（三）：Watermark](https://juejin.im/post/6844904195120693262)
