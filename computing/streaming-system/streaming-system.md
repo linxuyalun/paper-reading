@@ -255,3 +255,12 @@ PCollection<KV<Team, Integer>> scores = input
 
 * [Streaming System 第三章：Watermarks](https://developer.aliyun.com/article/682873?spm=a2c6h.13262185.0.0.314f8a3bMn2rBt)
 * [《Streaming Systems》读书笔记（三）：Watermark](https://juejin.im/post/6844904195120693262)
+
+## Chapter 4 Advanced Windowing
+
+* [《Streaming Systems》读书笔记（四）：Advanced Windowing](https://juejin.im/post/6844904205627424782)
+
+## Chapter 5 Exactly-Once and Side Effects
+
+* [《流式处理系统》 - 数据准确一次处理及其副作用](https://www.cnblogs.com/AloneAli/p/4680802.html)
+* [流式数据 Exactly-once 递交及副作用](https://weilutan.com/archives/5b04af92.html)
