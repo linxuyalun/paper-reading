@@ -264,3 +264,18 @@ PCollection<KV<Team, Integer>> scores = input
 
 * [《流式处理系统》 - 数据准确一次处理及其副作用](https://www.cnblogs.com/AloneAli/p/4680802.html)
 * [流式数据 Exactly-once 递交及副作用](https://weilutan.com/archives/5b04af92.html)
+
+## Chapter 6 Streams and Tables
+
+* [流表相对论](https://cloud.tencent.com/developer/article/1418746)
+
+
+
+https://www.zhihu.com/people/legendtkl/posts 一些关于 flink 的文章
+
+[大数据凉了？不，流式计算浪潮才刚刚开始](https://www.infoq.cn/article/the-evolution-of-large-scale-data-processing)
+
+[评:Streaming System(简直炸裂,强势安利)](https://zhuanlan.zhihu.com/p/43301661)
+
+[Paper 阅读: Distributed Snapshots: Determining Global States of Distributed Systems](https://matt33.com/2019/10/27/paper-chandy-lamport/)
+
