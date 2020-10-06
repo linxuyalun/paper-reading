@@ -279,3 +279,16 @@ https://www.zhihu.com/people/legendtkl/posts 一些关于 flink 的文章
 
 [Paper 阅读: Distributed Snapshots: Determining Global States of Distributed Systems](https://matt33.com/2019/10/27/paper-chandy-lamport/)
 
+[第6章和第8章的 ppt](https://blog.csdn.net/b6ecl1k7BS8O/article/details/80570486)
+
+
+
+## Presentation 顺序
+
+* [大数据凉了？不，流式计算浪潮才刚刚开始](https://www.infoq.cn/article/the-evolution-of-large-scale-data-processing)
+  * 介绍批处理，讲清楚问题
+  * [Spark Streaming 设计原理](https://zhuanlan.zhihu.com/p/47838090)
+  * [Spark streaming 的问题，简单介绍一下 ss2.3](https://zhuanlan.zhihu.com/p/51883927)
+  * [介绍 the data flow model](https://zhuanlan.zhihu.com/p/54739130)
+  * Flink 论文介绍
+  * [分布式快照算法: Chandy-Lamport 算法](https://zhuanlan.zhihu.com/p/53482103)，对应论文 Lightweight Asynchronous Snapshots for Distributed Dataflows
