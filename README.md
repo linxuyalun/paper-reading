@@ -94,13 +94,18 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
 
-## Streaming Processing
+## Streaming
 
-[**Books: Streaming System**](computing/streaming-system/streaming-system.md)
+[**Books: Streaming System**](streaming/streaming-system/streaming-system.md)
 
 一本关于流处理大家非常推荐的书籍。
 
-[**The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive Scale, Unbounded, Out of Order Data Processing**](computing/dataflowmodel/dataflowmodel.md)
+[**The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive Scale, Unbounded, Out of Order Data Processing**](streaming/dataflowmodel/dataflowmodel.md)
 
-* 要解决的问题：
-  * 实践表明，我们**永远无法同时优化数据处理的准确性、延迟程度和处理成本等各个维度**。因此，数据工作者面临如何协调这些几乎相互冲突的数据处理技术指标的窘境，设计出来各种纷繁的数据处理系统和实践方法。
+* 我们**永远无法同时优化数据处理的准确性、延迟程度和处理成本等各个维度**。
+
+[**Apache FlinkTM: Stream and Batch Processing in a Single Engine**](streaming/flink/flink.md)
+
+这篇文章主要是对 flink 架构的介绍，其中各种对于流处理中抽象的思考其实基本可以参见 dataflow model 这篇文章。这个架构的模型也比较粗略，其中比较值得关注的就是数据流的流动，已经 back pressure 的应对状况。而另外一个很重要的容错，在下面这篇论文。
+
+Lightweight Asynchronous Snapshots for Distributed Dataflows

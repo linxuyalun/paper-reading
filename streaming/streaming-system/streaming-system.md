@@ -290,5 +290,6 @@ https://www.zhihu.com/people/legendtkl/posts 一些关于 flink 的文章
   * [Spark Streaming 设计原理](https://zhuanlan.zhihu.com/p/47838090)
   * [Spark streaming 的问题，简单介绍一下 ss2.3](https://zhuanlan.zhihu.com/p/51883927)
   * [介绍 the data flow model](https://zhuanlan.zhihu.com/p/54739130)
-  * Flink 论文介绍
-  * [分布式快照算法: Chandy-Lamport 算法](https://zhuanlan.zhihu.com/p/53482103)，对应论文 Lightweight Asynchronous Snapshots for Distributed Dataflows
+  * 简单介绍 Flink 论文中的体系结构，两个侧重点：
+    * 容错的处理 [分布式快照算法: Chandy-Lamport 算法](https://zhuanlan.zhihu.com/p/53482103)，对应论文 Lightweight Asynchronous Snapshots for Distributed Dataflows
+    * 准确一次的处理
