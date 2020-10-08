@@ -102,10 +102,12 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 [**The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive Scale, Unbounded, Out of Order Data Processing**](streaming/dataflowmodel/dataflowmodel.md)
 
-* 我们**永远无法同时优化数据处理的准确性、延迟程度和处理成本等各个维度**。
+提出了一个抽象的流模型，降维打击。
 
 [**Apache FlinkTM: Stream and Batch Processing in a Single Engine**](streaming/flink/flink.md)
 
 这篇文章主要是对 flink 架构的介绍，其中各种对于流处理中抽象的思考其实基本可以参见 dataflow model 这篇文章。这个架构的模型也比较粗略，其中比较值得关注的就是数据流的流动，已经 back pressure 的应对状况。而另外一个很重要的容错，在下面这篇论文。
 
-Lightweight Asynchronous Snapshots for Distributed Dataflows
+**[Lightweight Asynchronous Snapshots for Distributed Dataflows](streaming/flink/abs.md)**
+
+异步全局快照算法，barrier 的思想很有道理，异步的处理也很妙。

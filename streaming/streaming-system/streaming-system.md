@@ -249,7 +249,7 @@ PCollection<KV<Team, Integer>> scores = input
 
 #### When: The Wonderful Thing About Triggers Is Triggers Are Wonderful Things!
 
-剩余部分见 [Streaming System 第二章：The What- Where- When- and How of Data Processing](https://developer.aliyun.com/article/674450?spm=a2c6h.13262185.0.0.314f8a3bMn2rBt)
+剩余部分见 [Streaming Sysstructured streamingtem 第二章：The What- Where- When- and How of Data Processing](https://developer.aliyun.com/article/674450?spm=a2c6h.13262185.0.0.314f8a3bMn2rBt)
 
 ## Chapter 3 Watermark
 
