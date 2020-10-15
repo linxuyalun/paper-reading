@@ -111,3 +111,9 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 **[Lightweight Asynchronous Snapshots for Distributed Dataflows](streaming/flink/abs.md)**
 
 异步全局快照算法，barrier 的思想很有道理，异步的处理也很妙。
+
+## Machine Learning Frameworks
+
+[**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)
+
+[**Ray: A Distributed Framework for Emerging AI Applications**](ml-framework/ray/ray.md)
