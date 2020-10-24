@@ -112,6 +112,8 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 异步全局快照算法，barrier 的思想很有道理，异步的处理也很妙。
 
+**[Turbine: Facebook’s Service Management Platform for Stream Processing](streaming/turbin/turbin.md)**
+
 ## Machine Learning Frameworks
 
 [**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)

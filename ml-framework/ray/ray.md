@@ -3,6 +3,7 @@
 * [监督学习 – Supervised learning](https://easyai.tech/ai-definition/supervised-learning/)
 * [深度强化学习总结](https://www.jianshu.com/p/d5aac10f4517)
 * [Ray: A Distributed Framework for Emerging AI Applications 译文](https://blog.csdn.net/u011254180/article/details/79327639)
+* [presentation](https://www.youtube.com/watch?v=CCL0ZkLl9ns)
 
 下一代AI应用程序将不断与环境交互，并从这些交互中学习。这些应用程序在性能和灵活性方面提出了新的和苛刻的系统要求。我们常讨论的模型都是监督型学习，而实际上，越来越多的应用程序不是做出和服务于单一预测，而是必须越来越多地在动态环境中运行，对环境变化作出反应，并采取一系列行动以实现一个目标。这些更广泛的要求自然地在强化学习（RL）的范式内进行，该学习在不确定的环境中学习持续运行。比如 Alpha Go，自动驾驶，无人机。
 
