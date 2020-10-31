@@ -114,6 +114,8 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 **[Turbine: Facebook’s Service Management Platform for Stream Processing](streaming/turbin/turbin.md)**
 
+**[TerseCades: Efficient Data Compression in Stream Processing](streaming/tersecades/tersecades.md)**
+
 ## Machine Learning Frameworks
 
 [**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)
