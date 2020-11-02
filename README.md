@@ -112,7 +112,7 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 异步全局快照算法，barrier 的思想很有道理，异步的处理也很妙。
 
-**[Turbine: Facebook’s Service Management Platform for Stream Processing](streaming/turbin/turbin.md)**
+**[Turbine: Facebook’s Service Management Platform for Stream Processing](streaming/turbine/turbine.md)**
 
 **[TerseCades: Efficient Data Compression in Stream Processing](streaming/tersecades/tersecades.md)**
 

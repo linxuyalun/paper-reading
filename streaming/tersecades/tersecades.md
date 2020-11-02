@@ -116,3 +116,4 @@
 ## Summary
 
 TerseCades 概念性验证了数据压缩对于流处理系统的益处，其实可以看到整个优化方法并不复杂，但是优化的角度切入比较新颖，另外给予 Base-Delta 压缩算法的 Directly Excution 也是一个不错的想法。
+
