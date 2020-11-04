@@ -1,4 +1,22 @@
 # paper-reading
+## Machine Learning Frameworks
+
+[**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)
+
+首先一般来说我们谈到 ML 框架我们想到的都是怎么优化这个训练流程，确实很少去考虑模型的放置，这篇文章告诉我们，模型放置也很重要，这在一定程度上扩展了我们的视野。
+
+Clipper 它干的第一件有意义的事情是它把所有那些混沌复杂的东西简单化了，它用一个中间件去解耦，它抽象了一个统一的模型放置 API，简化了整个部署流程，道出了软件工程的本质是抽象。
+
+CLipper 的另一个亮点是自适应 Batching，但是这个事情它的解决策略非常的简单粗暴，但是它的效果很好，所以有一个完整的系统，方法不需要多复杂，有一个好的实验优化结果，照样上顶会。
+
+但是 Clipper 实际上并不涉及硬件资源的配置，可以预想到的是，不论是什么模型肯定都优先希望自己的模型获得最好的硬件资源嘛，在 Clipper 中这部分内容还是需要用户的主动配置，这也完全可以理解，可以预想到的是，如果模型被放置在配置比较差的机器上，那么它的吞吐量和延迟肯定比较高。不过既然我们可以 AIMD 的方法去做自适应 batching，这同样也可以启发我们用类似的方法自动的去调度一些模型的放置，比如说在运行过程中发现哪些模型是常被选上的，那些模型正确率很高，可以让系统自动的去重新放置这个模型，计算吞吐量和延迟的变化，从而得到一个更高效的放置系统。
+
+[**Ray: A Distributed Framework for Emerging AI Applications**](ml-framework/ray/ray.md)
+
+Ray 突出了两点贡献，首先第一点，它把 task 和 actor 都抽象出来放在了一个统一的系统以同时部署 RL 和 模拟环境。它的整个思想抽象的很好并且 API 设计得也很简单，这是它重要的贡献之一。我们其实就简单两页介绍了一下，主要还是专业不对口。
+
+第二点，它提出了整个 Global Control Store，是其他组件都无状态化了，这种方法其实已经见的蛮多了，它另外一点是一个自底向上的调度器，从而做到尽可能的降低延迟。
+
 ## Scheduler
 
 **[Medea: Scheduling of Long Running Applications in Shared Production Clusters](scheduler/medea/medea.md)**
@@ -94,6 +112,8 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
 
+**[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
+
 ## Streaming
 
 [**Books: Streaming System**](streaming/streaming-system/streaming-system.md)
@@ -114,22 +134,10 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 **[Turbine: Facebook’s Service Management Platform for Stream Processing](streaming/turbine/turbine.md)**
 
+这篇细节比较丰富，没有什么特别有意思的点，但是很完整。
+
 **[TerseCades: Efficient Data Compression in Stream Processing](streaming/tersecades/tersecades.md)**
 
-## Machine Learning Frameworks
+18 年的论文，相比之前其他各种的优化，这篇文章是第一篇提出使用压缩算法来加速效率的，整个压缩算法很简单，采用的是 Base + Delta 算法，它的优势体现在快并且可以对压缩数据进行直接处理。但是压缩算法本身并不难，重要的是它的切入点是很好的一个点子。
 
-[**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)
-
-首先一般来说我们谈到 ML 框架我们想到的都是怎么优化这个训练流程，确实很少去考虑模型的放置，这篇文章告诉我们，模型放置也很重要，这在一定程度上扩展了我们的视野。
-
-Clipper 它干的第一件有意义的事情是它把所有那些混沌复杂的东西简单化了，它用一个中间件去解耦，它抽象了一个统一的模型放置 API，简化了整个部署流程，道出了软件工程的本质是抽象。
-
-CLipper 的另一个亮点是自适应 Batching，但是这个事情它的解决策略非常的简单粗暴，但是它的效果很好，所以有一个完整的系统，方法不需要多复杂，有一个好的实验优化结果，照样上顶会。
-
-但是 Clipper 实际上并不涉及硬件资源的配置，可以预想到的是，不论是什么模型肯定都优先希望自己的模型获得最好的硬件资源嘛，在 Clipper 中这部分内容还是需要用户的主动配置，这也完全可以理解，可以预想到的是，如果模型被放置在配置比较差的机器上，那么它的吞吐量和延迟肯定比较高。不过既然我们可以 AIMD 的方法去做自适应 batching，这同样也可以启发我们用类似的方法自动的去调度一些模型的放置，比如说在运行过程中发现哪些模型是常被选上的，那些模型正确率很高，可以让系统自动的去重新放置这个模型，计算吞吐量和延迟的变化，从而得到一个更高效的放置系统。
-
-[**Ray: A Distributed Framework for Emerging AI Applications**](ml-framework/ray/ray.md)
-
-Ray 突出了两点贡献，首先第一点，它把 task 和 actor 都抽象出来放在了一个统一的系统以同时部署 RL 和 模拟环境。它的整个思想抽象的很好并且 API 设计得也很简单，这是它重要的贡献之一。我们其实就简单两页介绍了一下，主要还是专业不对口。
-
-第二点，它提出了整个 Global Control Store，是其他组件都无状态化了，这种方法其实已经见的蛮多了，它另外一点是一个自底向上的调度器，从而做到尽可能的降低延迟。
+**[A Survey on the Evolution of Stream Processing Systems](streaming/survey/survey.md)**
