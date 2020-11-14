@@ -114,6 +114,20 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 **[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
 
+### SERIES: The Hydro Project -- RISE Lab
+
+> RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
+
+- *[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](https://arxiv.org/pdf/2007.05832.pdf)*. V. Sreekanti, H. Subbaraj, C. Wu, J. E. Gonzalez, J. M. Hellerstein. *arxiv:2007.05832*. 2020.
+- *[Cloudburst: Stateful Functions-as-a-Service](http://www.vldb.org/pvldb/vol13/p2438-sreekanti.pdf)*. V. Sreekanti, C. Wu, X. C. Lin, J. Schleier-Smith, J. M. Faleiro, J. E. Gonzalez, J. M. Hellerstein, A. Tumanov. *arxiv:2001.04592*. 2020.
+- *[Transactional Causal Consistency for Serverless Computing](https://dl.acm.org/doi/10.1145/3318464.3389710)*. C. Wu, V. Sreekanti, J. M. Hellerstein. *SIGMOD* 2020.
+- *[A Fault-Tolerance Shim for Serverless Computing](https://dl.acm.org/doi/abs/10.1145/3342195.3387535)*. V. Sreekanti, C. Wu, S. Chhatrapati, J. E. Gonzalez, J. M. Hellerstein, J. M. Faleiro. *EuroSys* 2020. *To appear.*
+- *[Autoscaling Tiered Cloud Storage in Anna](http://www.vldb.org/pvldb/vol12/p624-wu.pdf)*. C. Wu, V. Sreekanti, J.M. Hellerstein. *VLDB* 2019. (Preprint: [arXiv:1809.00089](https://arxiv.org/abs/1809.00089).)
+- *[Serverless Computing: One Step Forward, Two Steps Back](http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf)*. J.M. Hellerstein, J. Faleiro, J.E. Gonzalez, J. Schleier-Smith, V. Sreekanti, A. Tumanov, C. Wu. *CIDR* 2019. (Preprint: [arXiv:1812.03651](https://arxiv.org/abs/1812.03651).)
+- *[Anna: A KVS for Any Scale](https://ieeexplore.ieee.org/document/8640246)*. C. Wu, J. M. Faleiro, Y. Lin, J. M. Hellerstein. *ICDE* 2018, *TKDE* 2019.
+
+
+
 ## Streaming
 
 [**Books: Streaming System**](streaming/streaming-system/streaming-system.md)
