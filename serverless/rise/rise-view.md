@@ -59,9 +59,46 @@ Lambda 宣称一切皆是 lambda，人如其名，函数没有任何副作用，
 
 ## Cloudburst: Stateful FaaS
 
+本文要介绍的论文就是解决了上述问题的 Serverless 平台，要了解它的实现，首先需要知道 Cloudburst 所使用的数据库，Anna。
+
 ### Background: Anna
 
-Todo
+Anna 是 RISE 实验室自研的一个键值数据库，它比其他类似的数据库比如 Redis 以及 Cassandra 快上 10 倍，而比 DynamoDB 这样的数据库快上 500 倍。为什么 Anna 能够表现如此优异，我们需要了解一下 Anna 的主要设计。
+
+下图为 Anna 的主要架构：
+
+<img src="img/image-20201116153758624.png" alt="image-20201116153758624" style="zoom:30%;" />
+
+和传统的 shared memory model 的数据库不同，Anna 使用的 Actor Model。如上图，每个 Actor Core 占有一个 CPU 核，同时拥有自己内部完全私有的内存，Actor Core 之间内存 share nothing。数据间同步使用 gossip 的消息机制周期性的执行，完成数据的更新。
+
+> **📒 TIPS：Actor 异步模型与 CSP 异步模型之间的不同**。
+>
+> Actor 模型和 CSP 模型很像，他们之间的差别在：
+>
+> * Actor 模型发送 mail 的对象是确定的；
+> * CSP 模型发送消息到 channel 中，任何线程都可以往 channel 发消息，任何线程都可以从 channel 消费消息，并没有指定顺序。
+
+因此对应到 Anna 中，每个 Anna Actor Core 就是一个 Actor，gossip 就是 actor 模型中的 mail。
+
+既然使用了这样一个无锁的 no-coordinate 模型，那么 actor 模型间的数据一致性怎么保证的呢，这就不得不提 Anna 所使用的数据结构 Lattice。
+
+Lattice 是 CALM 理论下满足最终一致性的一种数据结构，它满足以下三条定律：
+
+* 结合律：(a+b)+c=a+(b+c)，消息之间可以任意顺序结合，最终结果等价；
+* 交换律：a+b=b+a，消息的顺序不再重要；
+* 幂等律：a+a=a，重发的消息不影响结果律。
+
+打个比方，我们把数据源头和数据最终的计算结果都比喻成一个点。集群的所有 server 在这两个点之间，构成一张数据流动的网，那么只要源头发送来数据，**不论这股数据被分成几个部分、发送到几个 server 上分别处理、处理的中间结果又如何结合成新的中间结果，最终的计算结果都是一样的**。这是 Anna 能使用 actor model 并且可以不加任何锁结构的原因，因为只要你的数据符合 lattice 的这个特性就行。
+
+那么，其实问题很明显了，关键就在 ValueLattice 对象的 merge 方法上。这个 merge 方法是可以由开发者自定义的，某些情况下开发者要负责写出符合 lattice 性质的 merge 方法。
+
+Anna 给了我们两个例子，其中一个是用 lattice 实现 Causal Consistency 的。实现方法通常是用 vector clock 。
+
+<img src="img/image-20201116161833037.png" alt="image-20201116161833037" style="zoom:30%;" />
+
+从最下端开始介绍，先是一个 MapLattice 结构来实现了 vector clock，key 是 client id，每个发送数据的 client 不同且唯一。MaxIntLattice 是 Anna 提供的预置 lattice，它的 merge 方法就是比较两个数谁大，merge 的结果就是大的那个数。之后的PairLattice 是 Anna 提供的另一种结构，简单理解就是它的 key 是一个 lattice 对象。这样图中的 PairLattice，其 value 是用户提供的数据，也是一个 ValueLattice 结构（merge 方法由用户提供）。然后两个 PairLattice 先比较它们的 key，即 MapLattice 实现的 vector clock，如果 vector clock 没有大小顺序，再调用 ValueLattice 的 merge 方法。最后，图中最顶层的 MapLattice 结构，其 key 是用户提供的 key。
+
+Anna 靠着这种简单的**分支 -> 合并 -> 再分支 -> 再合并**的结构，能实现一套灵活的、正确的分布式系统代码。这种从下而上的结构，底端结构只要符合 lattice 性质，那么最终整个程序一定也是符合 lattice 性质的。这样整个分布式程序的一致性模型就可以从编程模型上论证其正确性，这种结构的可读性也比较好。
 
 ### Cloudburst: FaaS over Anna
 
@@ -85,7 +122,7 @@ Todo
 
 为了保证 Cache 数据的新鲜程度，每个 local cache 会定期的把自己的数据快照发送给 Anna，Anna 会根据收到的数据快照逐步构建一个索引，索引的就是一个 key 对应的 cache 存储的具体位置，然后 Anna 利用这个 index 周期性的将 Key 的更新传播到每个 local cache 中。
 
-还有一个值得一提的点是，Cloudburst 支持 DAG，DAG 意味着涉及多个 Function Executor 的调用。理想情况下这些 Function Executor 应该在同一台 VM 上，但是为了能够让 Cloudburst 可能灵活的调度函数，DAG 被设计为可以完全跨 VM 执行。比如说一个有三个 Function 的 DAG，其对应的 Function Executor 可以在三个完全不同的 VM 上。
+还有一个值得一提的点是，Cloudburst 支持 DAG，DAG 意味着涉及多个 Function Executor 的调用。为了能够让 Cloudburst 可以灵活的调度函数，DAG 被设计为可以完全跨 VM 执行。比如说一个有三个 Function 的 DAG，其对应的 Function Executor 可以在三个完全不同的 VM 上。
 
 **问题是 Caching 的添加虽然解决了网络开销方面的烦恼，但是完全没有解决一致性问题**。现在在存储层和计算层都有了缓存的数据，那如何在这些不同的存储位置之间保持一致性呢？事实证明，这是一个非常棘手的技术问题。
 
@@ -97,7 +134,11 @@ Todo
 
 通过将 Lattice 加上一些协议使 Cloudburst 能够实现各种更强的隔离级别，其中包括 Causal Consistency，并且不需要同步协调，从而为 DAG 这样的工作负载提供更强的一致性保证。
 
-### Cache Consistency: Distributed Session Protocols
+### Cache Consistency in DAG: Distributed Session Protocols
+
+在 Cloudburst 使用 DAG 之前，必须先在系统中注册 DAG 中的每个 Function。DAG 执行会跨越多个 Function，并且在每次 DAG Function 调用之后，触发下游 DAG Function。 为了提高重复执行的性能，每个 DAG Function 都被反序列化并缓存在一个或多个执行器上。当用户请求一个 DAG 时，Cloudburst scheduler 会创建一个 DAG 的 schedule，schedule 记录了每个 DAG function 的 executor 并会把这个 schedule 广播到每一个 executor 上，从而确保上游 function 可以触发下游的 function。调度器会持久化 DAG 拓扑并存储在 KVS 中，调度程序跟踪每个 DAG 和每个 Function 的使用情况，从而进行更好的 autoscaling，调度不在我们这次介绍的重点，有兴趣的可以阅读论文相关部分。
+
+既然使用了 DAG，这个 DAG 其实就表示了程序的一个一致性要求，我们可以称为一个 session。一个 session 中的读写肯定需要保证一致性，实现这种方法最简单的肯定是单个线程运行整个 DAG 图，然后让 KVS 来提供一致性保证。但是，为了实现自动缩放和灵活的调度，Cloudburst 可以选择在 DAG 中的不同 Executor 上运行 Function。这就带来了分布式 Distributed session consistency 的挑战，由于 DAG 可以跨多个机器，单个 DAG 涉及的 executor 必须在不同的机器上保证一致。
 
 #### Distributed Session Repeatable Read
 
@@ -107,7 +148,31 @@ Todo
 
 为了保证 Repeatable Read，下游执行程序需要读取与上游执行程序读取的变量相同的版本。上图的算法显示了下游执行者为了确保这一点而执行的过程的伪代码。当 DAG 中的此类执行程序收到对 key k 的读取请求时，它会将其先前 snapshot 的快照元数据包括进对 cache 的请求中（算法 1 中的 R）。如果先前已读取 k 且确切的版本未存储在本地，cache 查询存储正确版本的上游缓存（算法 1 中的第 5 行）。如果确切的版本存储在本地（第 7 行），将其直接返回给用户。最后，如果到目前为止尚未读取 key，将任何可用的版本返回给客户端（第 9 行）。如果上游缓存失败，从头开始重新启动 DAG。最后，DAG 中的最后一个执行程序（sink）将 DAG 完成通知所有上游缓存，从而可以删去那个版本快照。
 
+#### Distributed Session Causal Consistency
 
+为了支持 Cloudburst 中的 Causal Consistency，使用了带有 Causal Consistency 的 Lattice 进行了封装（即前文 Anna 设计的数据结构），从而确保每个 Cache 中数据具有“因果关系”。
+
+但是，在每个单独的 local cache 维持 Causal 不足以实现 Distributed Session Causal Consistency，如下图：
+
+<img src="img/image-20201115235147871.png" alt="image-20201115235147871" style="zoom:30%;" />
+
+考虑一个具有两个函数 $f(k)$ 和 $g(l)$ 的 DAG，这两个函数在不同机器上依次执行，假设 f 读取 $k_v$，并且有一个依赖关系 $l_u→k_v$，如果执行函数 g 的节点不知道 l 的因果约束，那么 g 就会读取旧版本 $l_w→l_u$，从而违反 Causal。Cloudburst 使用这样一个协议解决了这个问题，下游函数除了像在 RR 中那样从上游中读取元数据之外，还会读取上游函数的因果关系集（key-value 对及其关联的矢量时钟），如下图算法 2 所示：
+
+<img src="img/image-20201115235934087.png" alt="image-20201115235934087" style="zoom:35%;" />
+
+对于请求的每个 key k，下游 cache 首先检查本地缓存的 key 的向量时钟是否与上游缓存中存储的版本快照的因果上是并发关系或占主导地位（算法 2 的 2-3 行）。如果是这样，缓存将返回本地版本（第 5 行）；否则，它将向上游缓存查询正确的版本快照（第7行）。如果请求的 key 在上游缓存中附带的一组依赖项中，也会执行相同裸机的检查和动作（第 8-13行）。
+
+### Evaluation
+
+回到我们之前那个实验，再看一下 Cloudburst 的性能：
+
+<img src="img/image-20201116162448970.png" alt="image-20201116162448970" style="zoom:30%;" />
+
+可以看到使用 Cloudburst （即上图的 Fluent）延迟达到了 4 ms 左右，Cloudburst 的 Cache 设计使得它能够完全无网络开销的去执行  Function，速度极快。
+
+## Summary
+
+Cloudburst 之所以拥有那么强的性能，主要体现在两点，首先它使用了一个无锁的高性能数据库，牺牲了一定的一致性的保证而换取高性能。另外一点就是 LDPC 的见解，当然其本质就是 locality。而剩下的问题就是去解决不同 VM 间的 cache 一致性保证。
 
 ## Reference
 
@@ -120,10 +185,4 @@ Todo
 * [分布式系统一致性学习笔记（一）：从操作购物车说起](https://zhuanlan.zhihu.com/p/51236822)
 * [分布式系统一致性学习笔记（二）：伯克利的 Anna](https://zhuanlan.zhihu.com/p/51609694)
 * [分布式系统一致性学习笔记（三）：Anna 总结篇](https://zhuanlan.zhihu.com/p/52356807)
-
-
-
-
-
-### 5.3
 
