@@ -95,41 +95,6 @@ Ray 突出了两点贡献，首先第一点，它把 task 和 actor 都抽象出
 * 要解决的问题：
 * 程序在集群中跑的时候，一个超过给定资源限制的任务可能会被截流或者被干掉，导致终端用户的延迟，所以一般来说，需要有集群管理者，主动分配一些多一点的资源，避免资源不够。
 
-## Serverless
-
-**Cloud Programming Simplified: A Berkeley View on Serverless Computing**
-
-一篇关于 serverless 的综述，本文见[[译]简化云编程：伯克利关于Serverless计算的观点](https://zhuanlan.zhihu.com/p/76180907)。
-
-**[SOCK: Rapid Task Provisioning with Serverless-Optimized Containers](serverless/sock/sock.md)**
-
-sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题进行的一系列优化，首先它认为 serverless 条件下现有的 docker 实现很多属性不需要了，具体的，
-
-* 使用 bind 来去掉 aufs
-* 使用了 chroot 取代了 mount namespace
-* 去掉了 net ns，因为可以依靠进程间通信
-* reuse cgroup
-
-当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
-
-**[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
-
-### SERIES: The Hydro Project -- RISE Lab
-
-> RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
-
-
-
-- *[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](https://arxiv.org/pdf/2007.05832.pdf)*. V. Sreekanti, H. Subbaraj, C. Wu, J. E. Gonzalez, J. M. Hellerstein. *arxiv:2007.05832*. 2020.
-- *[Cloudburst: Stateful Functions-as-a-Service](http://www.vldb.org/pvldb/vol13/p2438-sreekanti.pdf)*. V. Sreekanti, C. Wu, X. C. Lin, J. Schleier-Smith, J. M. Faleiro, J. E. Gonzalez, J. M. Hellerstein, A. Tumanov. *arxiv:2001.04592*. 2020.
-- *[Transactional Causal Consistency for Serverless Computing](https://dl.acm.org/doi/10.1145/3318464.3389710)*. C. Wu, V. Sreekanti, J. M. Hellerstein. *SIGMOD* 2020.
-- *[A Fault-Tolerance Shim for Serverless Computing](https://dl.acm.org/doi/abs/10.1145/3342195.3387535)*. V. Sreekanti, C. Wu, S. Chhatrapati, J. E. Gonzalez, J. M. Hellerstein, J. M. Faleiro. *EuroSys* 2020. *To appear.*
-- *[Autoscaling Tiered Cloud Storage in Anna](http://www.vldb.org/pvldb/vol12/p624-wu.pdf)*. C. Wu, V. Sreekanti, J.M. Hellerstein. *VLDB* 2019. (Preprint: [arXiv:1809.00089](https://arxiv.org/abs/1809.00089).)
-- *[Serverless Computing: One Step Forward, Two Steps Back](http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf)*. J.M. Hellerstein, J. Faleiro, J.E. Gonzalez, J. Schleier-Smith, V. Sreekanti, A. Tumanov, C. Wu. *CIDR* 2019. (Preprint: [arXiv:1812.03651](https://arxiv.org/abs/1812.03651).)
-- *[Anna: A KVS for Any Scale](https://ieeexplore.ieee.org/document/8640246)*. C. Wu, J. M. Faleiro, Y. Lin, J. M. Hellerstein. *ICDE* 2018, *TKDE* 2019.
-
-
-
 ## Streaming
 
 [**Books: Streaming System**](streaming/streaming-system/streaming-system.md)
@@ -157,3 +122,41 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 18 年的论文，相比之前其他各种的优化，这篇文章是第一篇提出使用压缩算法来加速效率的，整个压缩算法很简单，采用的是 Base + Delta 算法，它的优势体现在快并且可以对压缩数据进行直接处理。但是压缩算法本身并不难，重要的是它的切入点是很好的一个点子。
 
 **[A Survey on the Evolution of Stream Processing Systems](streaming/survey/survey.md)**
+
+## Serverless
+
+**Cloud Programming Simplified: A Berkeley View on Serverless Computing**
+
+一篇关于 serverless 的综述，本文见[[译]简化云编程：伯克利关于Serverless计算的观点](https://zhuanlan.zhihu.com/p/76180907)。
+
+**[SOCK: Rapid Task Provisioning with Serverless-Optimized Containers](serverless/sock/sock.md)**
+
+sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题进行的一系列优化，首先它认为 serverless 条件下现有的 docker 实现很多属性不需要了，具体的，
+
+* 使用 bind 来去掉 aufs
+* 使用了 chroot 取代了 mount namespace
+* 去掉了 net ns，因为可以依靠进程间通信
+* reuse cgroup
+
+当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
+
+**[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
+
+> todo
+
+**[SAND: Towards High-Performance Serverless Computing](serverless/sand/sand.md)**
+
+> Todo
+
+[**An Overview of Anna and Cloudburst**](serverless/rise/rise-view.md)
+
+RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
+
+- *[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](https://arxiv.org/pdf/2007.05832.pdf)*. V. Sreekanti, H. Subbaraj, C. Wu, J. E. Gonzalez, J. M. Hellerstein. *arxiv:2007.05832*. 2020.
+- *[Cloudburst: Stateful Functions-as-a-Service](http://www.vldb.org/pvldb/vol13/p2438-sreekanti.pdf)*. V. Sreekanti, C. Wu, X. C. Lin, J. Schleier-Smith, J. M. Faleiro, J. E. Gonzalez, J. M. Hellerstein, A. Tumanov. *arxiv:2001.04592*. 2020.
+- *[Transactional Causal Consistency for Serverless Computing](https://dl.acm.org/doi/10.1145/3318464.3389710)*. C. Wu, V. Sreekanti, J. M. Hellerstein. *SIGMOD* 2020.
+- *[A Fault-Tolerance Shim for Serverless Computing](https://dl.acm.org/doi/abs/10.1145/3342195.3387535)*. V. Sreekanti, C. Wu, S. Chhatrapati, J. E. Gonzalez, J. M. Hellerstein, J. M. Faleiro. *EuroSys* 2020. *To appear.*
+- *[Autoscaling Tiered Cloud Storage in Anna](http://www.vldb.org/pvldb/vol12/p624-wu.pdf)*. C. Wu, V. Sreekanti, J.M. Hellerstein. *VLDB* 2019. (Preprint: [arXiv:1809.00089](https://arxiv.org/abs/1809.00089).)
+- *[Serverless Computing: One Step Forward, Two Steps Back](http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf)*. J.M. Hellerstein, J. Faleiro, J.E. Gonzalez, J. Schleier-Smith, V. Sreekanti, A. Tumanov, C. Wu. *CIDR* 2019. (Preprint: [arXiv:1812.03651](https://arxiv.org/abs/1812.03651).)
+- *[Anna: A KVS for Any Scale](https://ieeexplore.ieee.org/document/8640246)*. C. Wu, J. M. Faleiro, Y. Lin, J. M. Hellerstein. *ICDE* 2018, *TKDE* 2019.
+
