@@ -150,7 +150,7 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 [**An Overview of Anna and Cloudburst**](serverless/rise/rise-view.md)
 
-RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
+> RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
 
 - *[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](https://arxiv.org/pdf/2007.05832.pdf)*. V. Sreekanti, H. Subbaraj, C. Wu, J. E. Gonzalez, J. M. Hellerstein. *arxiv:2007.05832*. 2020.
 - *[Cloudburst: Stateful Functions-as-a-Service](http://www.vldb.org/pvldb/vol13/p2438-sreekanti.pdf)*. V. Sreekanti, C. Wu, X. C. Lin, J. Schleier-Smith, J. M. Faleiro, J. E. Gonzalez, J. M. Hellerstein, A. Tumanov. *arxiv:2001.04592*. 2020.
