@@ -154,7 +154,11 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 [**An Overview of Anna and Cloudburst**](serverless/rise/rise-view.md)
 
+整个 base 的 Lattice 这种最终一致性的实现就很狠，整个论文都很秀。
+
 **[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](serverless/rise/cloudflow.md)**
+
+五个优化，operator fuse，竞争性执行，操作符自动扩展，数据局部性以及 batching。整个实现和 idea 都中规中矩，但是非常具有普适性，很多方向的论文都可以往这几个优化点去参考，另外实验也是这个论文表现的很不错的部分。
 
 RISE 实验室系列文章（RISE Lab [主页](https://hydro-project.github.io/)）：
 
