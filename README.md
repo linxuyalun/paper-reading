@@ -121,8 +121,6 @@ Ray 突出了两点贡献，首先第一点，它把 task 和 actor 都抽象出
 
 18 年的论文，相比之前其他各种的优化，这篇文章是第一篇提出使用压缩算法来加速效率的，整个压缩算法很简单，采用的是 Base + Delta 算法，它的优势体现在快并且可以对压缩数据进行直接处理。但是压缩算法本身并不难，重要的是它的切入点是很好的一个点子。
 
-**[A Survey on the Evolution of Stream Processing Systems](streaming/survey/survey.md)**
-
 ## Serverless
 
 **Cloud Programming Simplified: A Berkeley View on Serverless Computing**
@@ -144,13 +142,21 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 > todo
 
-**[SAND: Towards High-Performance Serverless Computing](serverless/sand/sand.md)**
+**[SAND: Towards High-Performance Serverless Computing](https://zhuanlan.zhihu.com/p/93985727)**
 
-> Todo
+这篇文章的目的就是设计高性能的 serverless 平台，提出两个机制保证低延迟以及高资源利用率。
+
+设计了一个细粒度的应用沙箱机制，关键思想是提供函数层和应用层次的隔离，简单来说就是不同应用在不同容器中执行，同一个应用中的函数在相同的容器中执行（当新请请求到来时，fork一个新进程）。
+
+设计了一个层次化的消息队列以及存储机制来利用同一个应用内部的函数之间交互的局部性。尽量将一个应用中的函数在同一个地方执行。在每台机器中，为同一个应用中的函数的本地交互提供了短路，这样尽可能接近本地执行。另外为了可靠性，部署了一个全局的消息总线来作为本地产生以及消耗的消息的备份。
+
+这个可靠性其实一般可靠，因为它为了效率是异步的，也就是说如果函数挂了重新执行的话这种异步是不能保证重复执行的；另外这个全局消息总线还有一个作用就是万一本地资源不够，又要把消息传给其他的机器上，那么就利用这个全局 bus 去传递。
 
 [**An Overview of Anna and Cloudburst**](serverless/rise/rise-view.md)
 
-> RISE 实验室系列文章，RISE Lab [主页](https://hydro-project.github.io/)。
+**[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](serverless/rise/cloudflow.md)**
+
+RISE 实验室系列文章（RISE Lab [主页](https://hydro-project.github.io/)）：
 
 - *[Optimizing Prediction Serving on Low-Latency Serverless Dataflow](https://arxiv.org/pdf/2007.05832.pdf)*. V. Sreekanti, H. Subbaraj, C. Wu, J. E. Gonzalez, J. M. Hellerstein. *arxiv:2007.05832*. 2020.
 - *[Cloudburst: Stateful Functions-as-a-Service](http://www.vldb.org/pvldb/vol13/p2438-sreekanti.pdf)*. V. Sreekanti, C. Wu, X. C. Lin, J. Schleier-Smith, J. M. Faleiro, J. E. Gonzalez, J. M. Hellerstein, A. Tumanov. *arxiv:2001.04592*. 2020.
