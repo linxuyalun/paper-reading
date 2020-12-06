@@ -170,3 +170,7 @@ RISE 实验室系列文章（RISE Lab [主页](https://hydro-project.github.io/)
 - *[Serverless Computing: One Step Forward, Two Steps Back](http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf)*. J.M. Hellerstein, J. Faleiro, J.E. Gonzalez, J. Schleier-Smith, V. Sreekanti, A. Tumanov, C. Wu. *CIDR* 2019. (Preprint: [arXiv:1812.03651](https://arxiv.org/abs/1812.03651).)
 - *[Anna: A KVS for Any Scale](https://ieeexplore.ieee.org/document/8640246)*. C. Wu, J. M. Faleiro, Y. Lin, J. M. Hellerstein. *ICDE* 2018, *TKDE* 2019.
 
+### Reference for Opening
+
+* Serverless Architecture (May 2018) https://martinfowler.com/articles/serverless.html   **CH Version**: [Artcle 1](https://blog.51cto.com/solarboy/2298314), [Article 2](https://blog.51cto.com/solarboy/2327660) ;
+* Michael Armbrust, Armando Fox, Rean Griffith, Anthony D. Joseph, Randy H. Katz, Andrew Konwinski, Gunho Lee, David A. Patterson, Ariel Rabkin, and Matei Zaharia. Above the clouds: A Berkeley view of cloud computing. Technical report, 2009.
