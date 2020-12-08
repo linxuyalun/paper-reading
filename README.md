@@ -140,8 +140,6 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 
 **[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
 
-> todo
-
 **[SAND: Towards High-Performance Serverless Computing](https://zhuanlan.zhihu.com/p/93985727)**
 
 这篇文章的目的就是设计高性能的 serverless 平台，提出两个机制保证低延迟以及高资源利用率。
