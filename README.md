@@ -136,7 +136,7 @@ sock 这篇文章主要做的贡献是针对 container 冷启动过长的问题�
 * 去掉了 net ns，因为可以依靠进程间通信
 * reuse cgroup
 
-当然，这篇文章还做了其他优化，但是这部分优化对我来说是相对帮助最大的部分。
+当然，这篇文章还做了其他优化，这里主要关注的是冷启动的优化。
 
 **[*Le Taureau*: Deconstructing the Serverless Landscape & A Look Forward](serverless/landscape/landscape.md)**
 
@@ -167,6 +167,10 @@ RISE 实验室系列文章（RISE Lab [主页](https://hydro-project.github.io/)
 - *[Autoscaling Tiered Cloud Storage in Anna](http://www.vldb.org/pvldb/vol12/p624-wu.pdf)*. C. Wu, V. Sreekanti, J.M. Hellerstein. *VLDB* 2019. (Preprint: [arXiv:1809.00089](https://arxiv.org/abs/1809.00089).)
 - *[Serverless Computing: One Step Forward, Two Steps Back](http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf)*. J.M. Hellerstein, J. Faleiro, J.E. Gonzalez, J. Schleier-Smith, V. Sreekanti, A. Tumanov, C. Wu. *CIDR* 2019. (Preprint: [arXiv:1812.03651](https://arxiv.org/abs/1812.03651).)
 - *[Anna: A KVS for Any Scale](https://ieeexplore.ieee.org/document/8640246)*. C. Wu, J. M. Faleiro, Y. Lin, J. M. Hellerstein. *ICDE* 2018, *TKDE* 2019.
+
+[**Understanding Ephemeral Storage for Serverless Analytics**](serverless/pocket/lab.md) & **[Pocket: Elastic Ephemeral Storage for Serverless Analytics](serverless/pocket/pocket.md)**
+
+
 
 ### Reference for Opening
 
