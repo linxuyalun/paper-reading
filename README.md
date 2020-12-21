@@ -171,8 +171,3 @@ RISE 实验室系列文章（RISE Lab [主页](https://hydro-project.github.io/)
 [**Understanding Ephemeral Storage for Serverless Analytics**](serverless/pocket/lab.md) & **[Pocket: Elastic Ephemeral Storage for Serverless Analytics](serverless/pocket/pocket.md)**
 
 
-
-### Reference for Opening
-
-* Serverless Architecture (May 2018) https://martinfowler.com/articles/serverless.html   **CH Version**: [Artcle 1](https://blog.51cto.com/solarboy/2298314), [Article 2](https://blog.51cto.com/solarboy/2327660) ;
-* Michael Armbrust, Armando Fox, Rean Griffith, Anthony D. Joseph, Randy H. Katz, Andrew Konwinski, Gunho Lee, David A. Patterson, Ariel Rabkin, and Matei Zaharia. Above the clouds: A Berkeley view of cloud computing. Technical report, 2009.
