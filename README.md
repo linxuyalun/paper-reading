@@ -1,4 +1,8 @@
 # paper-reading
+
+> ⚠️ 借鉴 [dyweb](https://github.com/dyweb)/**[papers-notebook](https://github.com/dyweb/papers-notebook)** 的维护方式，后续主要采用 issue 的方式进行后续论文阅读的维护，对于一些比较有价值的或者是细读的论文再单独放入 repo 里面相应的 PART。
+
+
 ## Machine Learning Frameworks
 
 [**Clipper: A Low-Latency Online Prediction Serving System**](ml-framework/clipper/clipper.md)
