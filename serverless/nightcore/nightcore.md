@@ -19,7 +19,7 @@ Serverless 提出的模型使得 FaaS 系统具有较高的调用延迟开销，
 
 为了能够支持 100K 每秒的调用，Nightcore engine 使用 Event-based Concurrency，通过较少的系统线程 handle 大量并发 I/O 事件，实验证明大约 4 个 OS 线程就可以 handle 这样的需求。
 
-总的来说，Nightcore，睡一个具有微秒级别开销的 serverless function runtime，同时提供了基于容器的函数间的隔离。Nightcore 的设计仔细考虑了具有微秒级开销的各种因素，包括 function 请求的调度、通信原语、I/O 线程模型和并发函数执行。当运行对延迟敏感的交互式微服务时，Nightcore 实现了 1.36 倍到 2.93 倍的高吞吐量和减少了约 69% 的尾延迟。
+总的来说，Nightcore，是一个具有微秒级别开销的 serverless function runtime，同时提供了基于容器的函数间的隔离。Nightcore 的设计仔细考虑了具有微秒级开销的各种因素，包括 function 请求的调度、通信原语、I/O 线程模型和并发函数执行。当运行对延迟敏感的交互式微服务时，Nightcore 实现了 1.36 倍到 2.93 倍的高吞吐量和减少了约 69% 的尾延迟。
 
 ## Design
 
@@ -69,11 +69,11 @@ Nightcore 使用一个自适应的手段管理函数执行数量，保证高并�
 
 **Event-Driven IO Threads**：Nightcore 使用了 [libuv](https://github.com/libuv/libuv)，它是建立在 `epoll` 之上从而实现其事件驱动的设计。 libuv 提供了用于观察 fd 的事件和为这些事件注册 handler 的 API。Engine 的每个 IO 线程都会运行一个 libuv 事件循环，它对 fd 事件进行轮询并执行注册的 handler。
 
-**Message Channels**：Message Channels 由两个 Linux pipe 实现，它们反向相反，从而形成一个全双工连接，同时，当内联有效载荷缓冲区不足以满足函数输入或输出时，共享内存缓冲区被使用。尽管共享内存允许 IPC，但它缺乏一种有效的机制来通知消费者线程何时有数据可用。
+**Message Channels**：Message Channels 由两个 Linux pipe 实现，它们方向相反，从而形成一个全双工连接，同时，当内联有效载荷缓冲区不足以满足函数输入或输出时，共享内存缓冲区被使用。尽管共享内存允许 IPC，但它缺乏一种有效的机制来通知消费者线程何时有数据可用。
 
 Nightcore 对 pipe 和共享内存的使用得到了两方面的好处。它允许消费者通过管道上的阻塞读取得到通知，同时，在传输大型消息有效载荷时，它提供了共享内存的低延迟和高吞吐量。
 
-Nightcore在容器之间挂载一个共享的 tmpfs 目录，以帮助设置 pipe 和共享内存缓冲区。Nightcore 在共享的 tmpfs 中创建了 nameed pipe，允许 worker 进行连接。共享内存缓冲区是通过在 tmpfs 中创建文件来实现的，engine 和 worker 都会用 `MAP_SHARED` 标志对这些文件进行映射。Docker 本身就支持容器之间共享 IPC 命名空间，但对于 Docker 的集群模式来说，这种设置是很困难的。Nightcore 的方法从效果的角度上与 IPC 命名空间是相同的，Linux System V shared memory 内部是由 tmpfs 实现的。
+Nightcore在容器之间挂载一个共享的 tmpfs 目录，以帮助设置 pipe 和共享内存缓冲区。Nightcore 在共享的 tmpfs 中创建了 named pipe，允许 worker 进行连接。共享内存缓冲区是通过在 tmpfs 中创建文件来实现的，engine 和 worker 都会用 `MAP_SHARED` 标志对这些文件进行映射。Docker 本身就支持容器之间共享 IPC 命名空间，但对于 Docker 的集群模式来说，这种设置是很困难的。Nightcore 的方法从效果的角度上与 IPC 命名空间是相同的，Linux System V shared memory 内部是由 tmpfs 实现的。
 
 **Computing Concurrency Hints**：为了有效地调节并发函数的执行量，Nightcore Engine 为每个函数维护 𝜆 和 𝑡 。调用率的样本计算 `𝜆 = 1/(连续 Fn 调用之间的间隔)`，而处理时间计算为 `𝑡 = 调度和完成时间戳之间的间隔`，该间隔不包括排队延迟（即接收和调度时间戳之间的间隔）。
 
