@@ -30,7 +30,7 @@ Serverless 已经成为当代软件体系结构世界中的热门话题，其计
 
 那么这样的一个模型适用哪些场景？无状态和 autoscaling 意味着 serverless 适合执行一些并行任务，类似 ETL 这样的任务，我不需要任何协调，任务都是并行的，输出只取决于输入，完全幂等，那我们可以认为这样的模型是完美契合 serverless 的。
 
-Serverless 其实还具有一个隐性的特点，那就是流程驱动的，这意味着它非常时候工作流编排，，下图是 Amazon AWS 中 Autodesk 的工作流示例，大约有 24 个 Lambda 函数调用，12 个 API 网关调用，8 个数据库访问和 7 个 SNS（Social Network Service） 通知。Lambda 在这里的作用是协调这些任务。
+Serverless 其实还具有一个隐性的特点，那就是流程驱动的，这意味着它非常适合工作流编排，，下图是 Amazon AWS 中 Autodesk 的工作流示例，大约有 24 个 Lambda 函数调用，12 个 API 网关调用，8 个数据库访问和 7 个 SNS（Simple Notification Service） 通知。Lambda 在这里的作用是协调这些任务。
 
 ![img](img/(null)-20210821191036773.(null))
 
@@ -136,6 +136,8 @@ Unikernel 目前并不成熟，但是相关研究一直不少，比如说 Eurosy
 由于 Serverless 平台跑的并非后端服务，端口静态绑定并非是必选项，我只要可以进程间通信就可以了，而跨节点的通信交给其他服务来维护，所以 net namespace 就可以直接不使用了。
 
 最后，Cgroup 为容器提供了资源隔离，目前 Docker 采用的是直接 create Cgroup 资源，但是 Cgroup 是可以复用的，如下图，reuse 比 create 性能要好很多，因此，SOCK 就使用了 Cgroup reuse 来替换 Cgroup create。
+
+![image-20210827212554816](img/image-20210827212554816.png)
 
 总结一下，SOCK 干的事情实际上就是把那些对用户来说更灵活，更昂贵的开销都干掉，而使用更简单，更 cheap 的机制作为替代，从而达到降低冷启动的效果（总体大约达到了 18 倍的优化）。
 
